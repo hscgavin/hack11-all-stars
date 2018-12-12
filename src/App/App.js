@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CompanyAutosuggest from './Components/CompanyAutosuggest/CompanyAutosuggest';
+import CompanyLogo from './Components/CompanyLogo/CompanyLogo';
 import {
   StyleGuideProvider,
   Header,
@@ -19,7 +20,8 @@ export default class App extends Component {
     this.state = {
       name: '',
       showMessage: false,
-      summary: {}
+      summary: {},
+      companyDetails: {}
     };
   }
 
@@ -30,11 +32,6 @@ export default class App extends Component {
     })
   };
 
-  handleChange = ({ target }) => {
-    this.setState({
-      [target.id]: target.type === 'checkbox' ? target.checked : target.value
-    });
-  };
 
   render() {
     return (
@@ -62,7 +59,7 @@ export default class App extends Component {
                     <div>
                       <ReviewItem count={item.count} title={item.title} text={item.text}/>
                     </div>
-                 )}/> 
+                 )}/>
               </If>
               </Section>
             </Card>

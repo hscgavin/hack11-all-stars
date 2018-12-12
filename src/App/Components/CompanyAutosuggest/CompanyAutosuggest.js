@@ -43,7 +43,7 @@ export default class CompanyAutosuggest extends React.Component {
   onSuggestionSelected = (event, { suggestion, suggestionValue }) => {
     event.preventDefault();
     fetch(
-      `https://xdbcd0rryb.execute-api.ap-southeast-2.amazonaws.com/staging/api/summarized-review?id=${suggestionValue.id}`)
+      `https://xdbcd0rryb.execute-api.ap-southeast-2.amazonaws.com/staging/api/summarized-review?id=${suggestion.id}`)
       .then(res => res.json()
       ).then(summary => {
         this.props.onSuggestionSelected(summary);
@@ -102,7 +102,7 @@ export default class CompanyAutosuggest extends React.Component {
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
-      placeholder: 'Search company',
+      placeholder: 'Search for a company',
       value,
       onChange: this.onChange
     };
@@ -110,20 +110,20 @@ export default class CompanyAutosuggest extends React.Component {
     // Finally, render it!
     return (
       <div>
-      <Autosuggest label="Company name"
-        inputProps={inputProps}
-        autosuggestProps={{
-          onSuggestionsFetchRequested: this.onSuggestionsFetchRequested,
-          onSuggestionsClearRequested: this.onSuggestionsClearRequested,
-          getSuggestionValue: getSuggestionValue,
-          renderSuggestion: renderSuggestion,
-          onSuggestionSelected: this.onSuggestionSelected,
-          // shouldRenderSuggestions: shouldRenderSuggestions,
-          // renderSectionTitle: renderSectionTitle,
-          // getSectionSuggestions: getSectionSuggestions,
-          suggestions
-        }}
-      />
+        <Autosuggest
+          inputProps={inputProps}
+          autosuggestProps={{
+            onSuggestionsFetchRequested: this.onSuggestionsFetchRequested,
+            onSuggestionsClearRequested: this.onSuggestionsClearRequested,
+            getSuggestionValue: getSuggestionValue,
+            renderSuggestion: renderSuggestion,
+            onSuggestionSelected: this.onSuggestionSelected,
+            // shouldRenderSuggestions: shouldRenderSuggestions,
+            // renderSectionTitle: renderSectionTitle,
+            // getSectionSuggestions: getSectionSuggestions,
+            suggestions
+          }}
+        />
       </div>
     );
   }
