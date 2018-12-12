@@ -9,7 +9,8 @@ import {
   Section,
   Text,
 } from 'seek-style-guide/react';
-import styles from './App.less';
+import {If, For} from 'react-inline-logic'
+import ReviewItem from './Components/ReviewItem'
 
 export default class App extends Component {
   constructor() {
@@ -54,19 +55,18 @@ export default class App extends Component {
               </div>
             </Section>
           </Card>
-          {
-            this.state.summary && this.state.summary.reviews &&
             <Card>
               <Section>
-                <div>
-                  {this.state.summary.reviews[0].text}
-                </div>
+              <If condition={this.state.summary && this.state.summary.reviews}>
+                 <For list={this.state.summary.reviews} onLoop={(item, i)=>(
+                    <div>
+                      <ReviewItem count={item.count} title={item.title} text={item.text}/>
+                    </div>
+                 )}/> 
+              </If>
               </Section>
             </Card>
-          }
-
         </PageBlock>
-
         <Footer />
       </StyleGuideProvider>
     );

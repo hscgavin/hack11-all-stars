@@ -110,7 +110,7 @@ export default class CompanyAutosuggest extends React.Component {
     // Finally, render it!
     return (
       <div>
-      <Autosuggest
+      <Autosuggest label="Company name"
         inputProps={inputProps}
         autosuggestProps={{
           onSuggestionsFetchRequested: this.onSuggestionsFetchRequested,
