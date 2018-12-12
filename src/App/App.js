@@ -31,7 +31,7 @@ export default class App extends Component {
   render() {
     return (
       <StyleGuideProvider>
-        <Header />
+        <Header activeTab="Company Reviews" />
 
         <PageBlock>
           <Card transparent>
