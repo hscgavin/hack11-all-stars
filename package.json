@@ -1,0 +1,19 @@
+{
+  "name": "hack11-all-stars",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "sku start",
+    "test": "sku test",
+    "build": "sku build",
+    "lint": "sku lint",
+    "format": "sku format"
+  },
+  "dependencies": {
+    "react": "16.6.3",
+    "react-dom": "16.6.3",
+    "react-helmet": "5.2.0",
+    "seek-style-guide": "38.8.2",
+    "sku": "7.2.3"
+  }
+}
