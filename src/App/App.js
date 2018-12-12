@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CompanyAutosuggest from './Components/CompanyAutosuggest/CompanyAutosuggest';
 import {
   StyleGuideProvider,
   Header,
@@ -7,8 +8,6 @@ import {
   Card,
   Section,
   Text,
-  TextField,
-  Checkbox
 } from 'seek-style-guide/react';
 import styles from './App.less';
 
@@ -18,9 +17,17 @@ export default class App extends Component {
 
     this.state = {
       name: '',
-      showMessage: false
+      showMessage: false,
+      summary: {}
     };
   }
+
+  onSuggestionSelected = (summary) => {
+    console.log(summary)
+    this.setState({
+      summary
+    })
+  };
 
   handleChange = ({ target }) => {
     this.setState({
@@ -36,40 +43,28 @@ export default class App extends Component {
         <PageBlock>
           <Card transparent>
             <Section header>
-              <Text hero>create-seek-ui</Text>
+              <Text hero>Company Reviews</Text>
             </Section>
           </Card>
 
           <Card>
             <Section>
               <div>
-                <TextField
-                  label="Name"
-                  id="name"
-                  value={this.state.name}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className={styles.showMessage}>
-                <Checkbox
-                  label="Show greeting"
-                  id="showMessage"
-                  checked={this.state.showMessage}
-                  onChange={this.handleChange}
-                />
+                <CompanyAutosuggest onSuggestionSelected={this.onSuggestionSelected}/>
               </div>
             </Section>
           </Card>
-
-          {!this.state.showMessage ? null : (
+          {
+            this.state.summary && this.state.summary.reviews &&
             <Card>
               <Section>
-                <Text heading positive>
-                  Hello {this.state.name || 'there'}!
-                </Text>
+                <div>
+                  {this.state.summary.reviews[0].text}
+                </div>
               </Section>
             </Card>
-          )}
+          }
+
         </PageBlock>
 
         <Footer />
