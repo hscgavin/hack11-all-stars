@@ -93,13 +93,8 @@ export default class App extends Component {
         <PageBlock className={styles.header}>
           <Card transparent>
             <Section header>
-              <Text heading className={styles.companyAutosuggestTitle}>Discover the right workplace - Powered By AI
-              </Text>
-            </Section>
-            <Section>
-              <div>
-                <CompanyAutosuggest onSuggestionSelected={this.onSuggestionSelected}/>
-              </div>
+              <Text heading className={styles.companyAutosuggestTitle}>Discover the right workplace - Powered By AI</Text>
+              <CompanyAutosuggest onSuggestionSelected={this.onSuggestionSelected}/>
             </Section>
           </Card>
         </PageBlock>
