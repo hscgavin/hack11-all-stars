@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Autosuggest } from 'seek-style-guide/react';
 import { parse as parseAutosuggestMatches } from 'autosuggest-highlight/parse';
+import debounce from 'lodash/debounce';
 
 
 
@@ -22,16 +23,24 @@ export default class CompanyAutosuggest extends React.Component {
   constructor() {
     super();
 
-    // Autosuggest is a controlled component.
-    // This means that you need to provide an input value
-    // and an onChange handler that updates this value (see below).
-    // Suggestions also need to be provided to the Autosuggest,
-    // and they are initially empty because the Autosuggest is closed.
+    this.debouncedCompanySearch = debounce(this.companySearch, 200);
+
     this.state = {
       value: '',
       suggestions: [],
       summary: {}
     };
+  }
+
+  companySearch(value) {
+    fetch(`http://13.210.69.63:8084/api/company-suggest?q=${value}`,
+    ).then(res => {
+      return res.json();
+    }).then(result => {
+      this.setState({
+        suggestions: result
+      });
+    });
   }
 
   onChange = (event, { newValue }) => {
@@ -43,7 +52,7 @@ export default class CompanyAutosuggest extends React.Component {
   onSuggestionSelected = (event, { suggestion, suggestionValue }) => {
     event.preventDefault();
     fetch(
-      `https://xdbcd0rryb.execute-api.ap-southeast-2.amazonaws.com/staging/api/summarized-review?id=${suggestion.id}`)
+      `http://13.210.69.63:8084/api/summarized-review?id=${suggestion.id}`)
       .then(res => res.json()
       ).then(summary => {
         this.props.onSuggestionSelected(summary);
@@ -54,16 +63,8 @@ export default class CompanyAutosuggest extends React.Component {
 
   onSuggestionsFetchRequested = ({ value }) => {
     if (value.length > 1) {
-      fetch(`https://xdbcd0rryb.execute-api.ap-southeast-2.amazonaws.com/staging/api/company-suggest?q=${value}`,
-        ).then(res => {
-        return res.json();
-      }).then(result => {
-        this.setState({
-          suggestions: result
-        });
-      });
-
-    };
+      this.debouncedCompanySearch(value);
+    }
   };
 
   // Autosuggest will call this function every time you need to clear suggestions.
@@ -95,7 +96,7 @@ export default class CompanyAutosuggest extends React.Component {
         }
       </span>
     );
-  }
+  };
 
   render() {
     const { value, suggestions } = this.state;
