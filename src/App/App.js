@@ -23,33 +23,34 @@ export default class App extends Component {
       summary: {},
       companyInfo: '',
       fetching: true,
-      company: {
-        id: 12323,
-        name: 'Bananas in pijamas',
-        link: 'https://www.seek.com.au/companies/job-prospects-435969'
-      },
-      reviews: [
-        {
-          count: 12,
-          title: 'Very nice',
-          text: 'Cool! Very nice! Awesome company'
-        },
-        {
-          count: 11,
-          title: 'So so',
-          text: 'Cool! Very nice! Awesome company'
-        },
-        {
-          count: 1,
-          title: 'Terrible',
-          text: 'I prefer teletubyes'
-        },
-        {
-          count: 99,
-          title: 'Amazing',
-          text: 'Are you think what I thinking B1?'
-        }
-      ]
+      summary: {},
+      // company: {
+      //   id: 12323,
+      //   name: 'Bananas in pijamas',
+      //   link: 'https://www.seek.com.au/companies/job-prospects-435969'
+      // },
+      // reviews: [
+      //   {
+      //     count: 12,
+      //     title: 'Very nice',
+      //     text: 'Cool! Very nice! Awesome company'
+      //   },
+      //   {
+      //     count: 11,
+      //     title: 'So so',
+      //     text: 'Cool! Very nice! Awesome company'
+      //   },
+      //   {
+      //     count: 1,
+      //     title: 'Terrible',
+      //     text: 'I prefer teletubyes'
+      //   },
+      //   {
+      //     count: 99,
+      //     title: 'Amazing',
+      //     text: 'Are you think what I thinking B1?'
+      //   }
+      // ]
     }
   }
 
@@ -57,7 +58,6 @@ export default class App extends Component {
     fetch('https://company-profiles-api.cloud.seek.com.au/v2/companies/432600')
       .then(res => res.json())
       .then(({data}) => {
-        console.log(data)
         this.setState({
           companyInfo: data,
           fetching: false
@@ -68,14 +68,13 @@ export default class App extends Component {
   }
 
   onSuggestionSelected = (summary) => {
-    console.log(summary)
     this.setState({ fetching: true});
-    fetch(`https://company-profiles-api.cloud.seek.com.au/v2/companies/${summary.id}`)
+    fetch(`https://company-profiles-api.cloud.seek.com.au/v2/companies/${summary.company.id}`)
       .then( res => res.json())
-      .then( companyInfo => {
+      .then( ({data}) => {
         this.setState({
           summary,
-          companyInfo,
+          companyInfo: data,
           fetching: false
         })
       })
@@ -110,10 +109,14 @@ export default class App extends Component {
                   <CompanyRating companyInfo={companyInfo}/>
                 </div>
               )}
-              <ReviewList
-                reviews={this.state.reviews}
-                company={this.state.company}
-              />
+              {
+                Object.keys(summary).length > 0 && (
+                  <ReviewList
+                    reviews={summary.reviews}
+                    company={summary.company}
+                  />
+                )
+              }
             </Section>
           </Card>
         </PageBlock>
