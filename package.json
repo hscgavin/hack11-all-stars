@@ -15,6 +15,7 @@
     "react-dom": "16.6.3",
     "react-helmet": "5.2.0",
     "react-inline-logic": "0.0.9",
+    "round-to": "^3.0.0",
     "seek-style-guide": "38.8.2",
     "sku": "7.2.3"
   }
