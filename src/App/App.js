@@ -22,35 +22,7 @@ export default class App extends Component {
     this.state = {
       summary: {},
       companyInfo: '',
-      fetching: true,
-      summary: {},
-      // company: {
-      //   id: 12323,
-      //   name: 'Bananas in pijamas',
-      //   link: 'https://www.seek.com.au/companies/job-prospects-435969'
-      // },
-      // reviews: [
-      //   {
-      //     count: 12,
-      //     title: 'Very nice',
-      //     text: 'Cool! Very nice! Awesome company'
-      //   },
-      //   {
-      //     count: 11,
-      //     title: 'So so',
-      //     text: 'Cool! Very nice! Awesome company'
-      //   },
-      //   {
-      //     count: 1,
-      //     title: 'Terrible',
-      //     text: 'I prefer teletubyes'
-      //   },
-      //   {
-      //     count: 99,
-      //     title: 'Amazing',
-      //     text: 'Are you think what I thinking B1?'
-      //   }
-      // ]
+      fetching: true
     }
   }
 
@@ -67,8 +39,13 @@ export default class App extends Component {
     });
   }
 
+  setFetchingState = () => {
+    this.setState({
+      fetching: true
+    })
+  };
+
   onSuggestionSelected = (summary) => {
-    this.setState({ fetching: true});
     fetch(`https://company-profiles-api.cloud.seek.com.au/v2/companies/${summary.company.id}`)
       .then( res => res.json())
       .then( ({data}) => {
@@ -93,7 +70,7 @@ export default class App extends Component {
           <Card transparent>
             <Section header>
               <Text heading className={styles.companyAutosuggestTitle}>Discover the right workplace - Powered By AI</Text>
-              <CompanyAutosuggest onSuggestionSelected={this.onSuggestionSelected}/>
+              <CompanyAutosuggest setFetchingState={this.setFetchingState} onSuggestionSelected={this.onSuggestionSelected}/>
             </Section>
           </Card>
         </PageBlock>
@@ -103,14 +80,14 @@ export default class App extends Component {
               {fetching && (
                 <Loader />
               )}
-              { companyInfo && (
+              { !fetching && companyInfo && (
                 <div className={styles.companyInfo}>
                   <CompanyLogo companyLogoUrl={companyInfo.companyLogoUrl} companyName={companyInfo.Name}/>
                   <CompanyRating companyInfo={companyInfo}/>
                 </div>
               )}
               {
-                Object.keys(summary).length > 0 && (
+                !fetching && Object.keys(summary).length > 0 && (
                   <ReviewList
                     reviews={summary.reviews}
                     company={summary.company}

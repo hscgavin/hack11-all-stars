@@ -51,6 +51,7 @@ export default class CompanyAutosuggest extends React.Component {
 
   onSuggestionSelected = (event, { suggestion, suggestionValue }) => {
     event.preventDefault();
+    this.props.setFetchingState();
     fetch(
       `http://13.210.69.63:8084/api/summarized-review?id=${suggestion.id}`)
       .then(res => res.json()
